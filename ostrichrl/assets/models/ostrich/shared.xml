@@ -1,0 +1,31 @@
+<mujoco>
+    <compiler meshdir="meshes" balanceinertia="true" angle="radian" eulerseq="xyz"/>
+    <option timestep="0.0025"/>
+    <size njmax="800" nconmax="500"/>
+    <visual>
+        <quality shadowsize="2048"/>
+        <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.1 0.1 0.1"/>
+        <map znear="0.01"/>
+    </visual>
+    <statistic extent="2.0" center="0 0 1"/>
+    <default>
+        <joint limited="true" solimplimit="0 0.99 0.01" stiffness="10.0" armature="0.01" damping="5.0"/>
+        <geom type="mesh" contype="1" conaffinity="0" group="0" friction="0.7" solref="0.015 1" solimp="0.95 0.99 0.003" material="bone"/>
+        <site group="4" rgba="0 1 0 1" size="0.01 0.01 0.01"/>
+        <tendon width="0.006" rgba="0.95 0.3 0.3 1"/>
+        <muscle ctrllimited="true" ctrlrange="-1 1"/>
+        <default class="leg">
+            <geom type="mesh" contype="3" conaffinity="2" group="0" friction="0.7" solref="0.015 1" solimp="0.95 0.99 0.003" material="bone"/>
+        </default>
+        <default class="wrapping">
+            <geom type="cylinder" contype="0" conaffinity="0" group="5" rgba="0 0 0.8 0.5"/>
+        </default>
+    </default>
+    <asset>
+        <texture name="skybox" type="skybox" builtin="gradient" rgb1="0.4 0.6 0.8" rgb2="0 0 0" mark="random" markrgb="1 1 1" width="800" height="800"/>
+        <texture name="plane" type="2d" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.3 0.4 0.5" width="10" height="10"/>
+        <material name="plane" texture="plane" texrepeat="5 5" reflectance="0.2"/>
+        <texture name="grid" type="2d" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" mark="edge" markrgb="0.2 0.3 0.4" width="300" height="300"/>
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+    </asset>
+</mujoco>

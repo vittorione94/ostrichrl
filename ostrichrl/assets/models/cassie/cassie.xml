@@ -1,0 +1,254 @@
+<mujoco model="cassie">
+    <compiler meshdir="meshes" balanceinertia="true" angle="radian" inertiafromgeom='auto'/>
+    <option timestep="0.0005" iterations='50' solver='PGS'/>
+    <size njmax="500" nconmax="100" nuser_geom="1" nuser_actuator="1" nuser_sensor="1"/>
+    <visual>
+        <quality shadowsize="4096"/>
+        <map znear="0.05"/>
+    </visual>
+    <default>
+        <joint limited="true"/>
+        <geom contype="0" conaffinity="0" condim="1" solref="0.02 1"/>
+        <equality solref=".0000005 .5" solimp="0.98 0.99 0.0001"/>
+        <motor ctrllimited="true"/>
+        <default class="cassie">
+            <default class="motor_piece">
+                <geom material="cassie2"/>
+            </default>
+            <default class="outside_piece">
+                <geom material="cassie"/>
+            </default>
+        </default>
+        <default class="collision">
+            <geom contype="1" material="collision" user="2"/>
+            <default class="collision-left">
+                <geom contype="2" conaffinity="4" user="2"/>
+            </default>
+            <default class="collision-right">
+                <geom contype="4" conaffinity="2" user="2"/>
+            </default>
+        </default>
+        <default class="obstacle">
+            <geom contype="8" conaffinity="15" condim="3" material="obstacle" user="1"/>
+        </default>
+    </default>
+    <asset>
+        <texture name="skybox" type="skybox" builtin="gradient" rgb1="0.4 0.6 0.8" rgb2="0 0 0" mark="random" markrgb="1 1 1" width="800" height="800"/>
+        <texture name="plane" type="2d" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.3 0.4 0.5" width="10" height="10"/>
+        <material name="plane" texture="plane" texrepeat="5 5" reflectance="0.2"/>
+        <material name="cassie" rgba="0.8 0 0.1 1" specular="1" shininess="1" reflectance="1"/>
+        <material name="cassie2" rgba="0.5 0.5 0.5 1" specular="0" shininess="0" reflectance="0"/>
+        <material name="collision" rgba="0.1 0.5 0.9 0"/>
+        <material name="obstacle" rgba="0.2 0.6 0.2 1"/>
+        <texture name="grid" type="2d" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" mark="edge" markrgb="0.2 0.3 0.4" width="300" height="300"/>
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+        <mesh name="cassie-pelvis" file="pelvis.stl"/>
+        <mesh name="left-hip-roll" file="hip-roll.stl"/>
+        <mesh name="left-hip-yaw" file="hip-yaw.stl"/>
+        <mesh name="left-hip-pitch" file="hip-pitch.stl"/>
+        <mesh name="left-achilles-rod" file="achilles-rod.stl"/>
+        <mesh name="left-knee" file="knee.stl"/>
+        <mesh name="left-knee-spring" file="knee-spring.stl"/>
+        <mesh name="left-shin" file="shin.stl"/>
+        <mesh name="left-tarsus" file="tarsus.stl"/>
+        <mesh name="left-heel-spring" file="heel-spring.stl"/>
+        <mesh name="left-foot-crank" file="foot-crank.stl"/>
+        <mesh name="left-plantar-rod" file="plantar-rod.stl"/>
+        <mesh name="left-foot" file="foot.stl"/>
+        <mesh name="right-hip-roll" file="hip-roll.stl" scale="1 -1 1"/>
+        <mesh name="right-hip-yaw" file="hip-yaw.stl" scale="1 -1 1"/>
+        <mesh name="right-hip-pitch" file="hip-pitch.stl" scale="1 1 -1"/>
+        <mesh name="right-achilles-rod" file="achilles-rod.stl" scale="1 1 -1"/>
+        <mesh name="right-knee" file="knee.stl" scale="1 1 -1"/>
+        <mesh name="right-knee-spring" file="knee-spring.stl" scale="1 1 -1"/>
+        <mesh name="right-shin" file="shin.stl" scale="1 1 -1"/>
+        <mesh name="right-tarsus" file="tarsus.stl" scale="1 1 -1"/>
+        <mesh name="right-heel-spring" file="heel-spring.stl" scale="1 1 -1"/>
+        <mesh name="right-foot-crank" file="foot-crank.stl" scale="1 1 -1"/>
+        <mesh name="right-plantar-rod" file="plantar-rod.stl" scale="1 1 -1"/>
+        <mesh name="right-foot" file="foot.stl" scale="1 1 -1"/>
+    </asset>
+
+    <worldbody>
+        <geom name="floor" type="plane" conaffinity="15" condim="3" size="50 50 0.2" material="grid" pos="0 0 0" zaxis="0 0 1"/>
+        <light name="light_0" mode="trackcom" pos="0 0 5" dir="0 0 -1"/>
+        <light name="light_1" directional="true" pos="0 0 3" dir="0 0 -1" diffuse="0.2 0.2 0.2" specular="0 0 0"/>
+
+        <body name="cassie" childclass="cassie" pos="0 0 1.25">
+            <camera name="side" mode="trackcom" pos="0 -3.5 1" euler="-5 0 0"/>
+            <camera name="back" mode="trackcom" pos="-3.5 0 1.3" xyaxes="0 -1 0 1 0 3"/>
+            <camera name="track" mode="track" pos="0 -3 1" quat="0.8507 0.5257 0 0"/>
+
+            <joint name="root_x" type="slide" pos="0 0 0" axis="1 0 0" limited="false"/>
+            <joint name="root_y" type="slide" pos="0 0 0" axis="0 1 0" limited="false"/>
+            <joint name="root_z" type="slide" pos="0 0 0" axis="0 0 1" limited="false" ref="1.01"/>
+            <joint name="root_rot_x" pos="0 0 0" axis="1 0 0" limited="false"/>
+            <joint name="root_rot_y" pos="0 0 0" axis="0 1 0" limited="false"/>
+            <joint name="root_rot_z" pos="0 0 0" axis="0 0 1" limited="false"/>
+
+            <geom type="mesh" mesh="cassie-pelvis" name ="cassie-pelvis" class="outside_piece"/>
+            <geom class="collision" size="0.15" pos="0.02 0 0.02"/>
+            <site name="imu" size="0.01" pos="0.03155 0 -0.07996"/>
+
+            <!-- left leg -->
+            <body name="left-hip-roll" pos="0.021 0.135 0">
+                <joint name="left-hip-roll" pos="0 0 0" axis="1 0 0" range="-0.2618 0.3927" damping="50"/>
+                <geom type="mesh" quat="0.7071 0 0.7071 0" mesh="left-hip-roll"/>
+                <body name="left-hip-yaw" pos="-0.07 0 0">
+                    <joint name="left-hip-yaw" pos="0 0 0" axis="0 0 1" range="-0.3927 0.3927" damping="50"/>
+                    <geom type="mesh" quat="1 0 0 0" mesh="left-hip-yaw"/>
+                    <body name="left-hip-pitch" pos="0 0 -0.09">
+                        <joint name="left-hip-pitch" pos="0 0 0" axis="0 -1 0" range="-0.8727 1.396" damping="50"/>
+                        <geom type="mesh" quat="-0.5 -0.5 -0.5 0.5" class="outside_piece" mesh="left-hip-pitch"/>
+                        <geom class="collision" type="capsule" size="0.08 0.06004" pos="0 0.03775 -0.06" quat="-0.707 0.01325 0.01325 0.707"/>
+                        <body name="left-achilles-rod" pos="0 -0.045 0">
+                            <joint name="left-achilles-rod_x" type="hinge" axis="1 0 0" pos="0 0 0" limited="false" damping="50"/>
+                            <joint name="left-achilles-rod_y" type="hinge" axis="0 1 0" pos="0 0 0" limited="false" damping="50"/>
+                            <joint name="left-achilles-rod_z" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="50"/>
+                            <geom type="mesh" quat="-0.2993 -0.3278 -0.6617 0.6042" mesh="left-achilles-rod"/>
+                        </body>
+                        <body name="left-knee" pos="0 -0.0045 -0.12">
+                            <joint name="left-knee" pos="0 0 0" axis="0 -1 0" range="-2.862 -0.6458" damping="50" ref="-0.785398"/>
+                            <geom type="mesh" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="left-knee"/>
+                            <body name="left-knee-spring" pos="0.01537 0 -0.1012">
+                                <geom type="mesh" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="left-knee-spring"/>
+                            </body>
+                            <body name="left-shin" pos="-0.009383 0 -0.07643">
+                                <joint name="left-shin" pos="0 0 0" axis="0 -1 0" stiffness="1500.0" range="-0.3491 0.3491" damping="50"/>
+                                <geom type="mesh" class="outside_piece" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="left-shin"/>
+                                <geom class="collision-left" type="capsule" size="0.04 0.2176" pos="-0.1466 0 -0.1608" quat="-0.644 0.2613 -0.2496 0.6743"/>
+                                <body name="left-tarsus" pos="-0.2933 0 -0.3216">
+                                    <joint name="left-tarsus" pos="0 0 0" axis="0 -1 0" range="0.8727 2.967" damping="50" ref="1.01229"/>
+                                    <geom type="mesh" class="outside_piece" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="left-tarsus"/>
+                                    <geom class="collision-left" type="capsule" size="0.04 0.2104" pos="0.01007 -0.00046 -0.2005" quat="-0.7113 -0.07215 0.07223 0.6954"/>
+                                    <body name="left-heel-spring" pos="-0.03266 -0.00092 0.005483">
+                                        <joint name="left-heel-spring" pos="0 0 0" axis="-0.0747 -0.9969 -0.02289" limited="false" stiffness="1250.0"/>
+                                        <geom type="mesh" quat="-0.5565 -0.5354 0.4741 -0.423" mesh="left-heel-spring"/>
+                                    </body>
+                                    <body name="left-foot-crank" pos="-0.02008 -0.02275 -0.06416">
+                                        <joint name="left-foot-crank" pos="0 0 0" axis="0 -1 0" range="-2.443 -0.5236" damping="50"/>
+                                        <geom type="mesh" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="left-foot-crank"/>
+                                        <body name="left-plantar-rod" pos="0.01237 0.00791 -0.05359">
+                                            <joint name="left-plantar-rod" pos="0 0 0" axis="0 -1 0" limited="false"/>
+                                            <geom type="mesh" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="left-plantar-rod"/>
+                                        </body>
+                                    </body>
+                                    <body name="left-foot" pos="0.05281 0 -0.4065">
+                                        <joint name="left-foot" pos="0 0 0" axis="0 -1 0" range="-2.443 -0.5236" damping="50"/>
+                                        <geom type="mesh" name="left-foot" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="left-foot"/>
+                                        <geom class="collision-left" type="capsule" size="0.02 0.08" pos="0.04205 0 0.001022" quat="-0.8813 0.09866 -0.2116 0.4109"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+            <!-- right leg -->
+            <body name="right-hip-roll" pos="0.021 -0.135 0">
+                <joint name="right-hip-roll" pos="0 0 0" axis="1 0 0" range="-0.3927 0.2618" damping="50"/>
+                <geom type="mesh" quat="0.7071 0 0.7071 0" mesh="right-hip-roll"/>
+                <body name="right-hip-yaw" pos="-0.07 0 0">
+                    <joint name="right-hip-yaw" pos="0 0 0" axis="0 0 1" range="-0.3927 0.3927" damping="50"/>
+                    <geom type="mesh" quat="1 0 0 0" mesh="right-hip-yaw"/>
+                    <body name="right-hip-pitch" pos="0 0 -0.09">
+                        <joint name="right-hip-pitch" pos="0 0 0" axis="0 -1 0" range="-0.8727 1.396" damping="50"/>
+                        <geom type="mesh" quat="-0.5 -0.5 -0.5 0.5" class="outside_piece" mesh="right-hip-pitch"/>
+                        <geom class="collision" type="capsule" size="0.08 0.06004" pos="0 -0.03775 -0.06" quat="-0.707 -0.01325 -0.01325 0.707"/>
+                        <body name="right-achilles-rod" pos="0 0.045 0">
+                            <joint name="right-achilles-rod_x" type="hinge" axis="1 0 0" pos="0 0 0" limited="false" damping="50"/>
+                            <joint name="right-achilles-rod_y" type="hinge" axis="0 1 0" pos="0 0 0" limited="false" damping="50"/>
+                            <joint name="right-achilles-rod_z" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="50"/>
+                            <geom type="mesh" quat="-0.3278 -0.2993 -0.6042 0.6617" mesh="right-achilles-rod"/>
+                        </body>
+                        <body name="right-knee" pos="0 0.0045 -0.12">
+                            <joint name="right-knee" pos="0 0 0" axis="0 -1 0" range="-2.862 -0.6458" damping="50" ref="-0.785398"/>
+                            <geom type="mesh" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="right-knee"/>
+                            <body name="right-knee-spring" pos="0.01537 0 -0.1012">
+                                <geom type="mesh" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="right-knee-spring"/>
+                            </body>
+                            <body name="right-shin" pos="-0.009383 0 -0.07643">
+                                <joint name="right-shin" pos="0 0 0" axis="0 -1 0" stiffness="1500.0" range="-0.3491 0.3491" damping="50"/>
+                                <geom type="mesh" class="outside_piece" quat="-0.2706 -0.2706 -0.6533 0.6533" mesh="right-shin"/>
+                                <geom class="collision-right" type="capsule" size="0.04 0.2176" pos="-0.1466 0 -0.1608" quat="-0.644 0.2613 -0.2496 0.6743"/>
+                                <body name="right-tarsus" pos="-0.2933 0 -0.3216">
+                                    <joint name="right-tarsus" pos="0 0 0" axis="0 -1 0" range="0.8727 2.967" damping="50" ref="1.01229"/>
+                                    <geom type="mesh" class="outside_piece" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="right-tarsus"/>
+                                    <geom class="collision-right" type="capsule" size="0.04 0.2104" pos="0.01007 0.00046 -0.2005" quat="-0.7112 -0.0706 0.07375 0.6956"/>
+                                    <body name="right-heel-spring" pos="-0.03266 0.00092 0.005483">
+                                        <joint name="right-heel-spring" pos="0 0 0" axis="0.0747 -0.9969 0.02289" limited="false" stiffness="1250.0"/>
+                                        <geom type="mesh" quat="-0.5354 -0.5565 0.423 -0.4741" mesh="right-heel-spring"/>
+                                    </body>
+                                    <body name="right-foot-crank" pos="-0.02008 0.02275 -0.06416">
+                                        <joint name="right-foot-crank" pos="0 0 0" axis="0 -1 0" range="-2.443 -0.5236" damping="50"/>
+                                        <geom type="mesh" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="right-foot-crank"/>
+                                        <body name="right-plantar-rod" pos="0.01237 -0.00791 -0.05359">
+                                            <joint name="right-plantar-rod" pos="0 0 0" axis="0 -1 0" limited="false"/>
+                                            <geom type="mesh" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="right-plantar-rod"/>
+                                        </body>
+                                    </body>
+                                    <body name="right-foot" pos="0.05281 0 -0.4065">
+                                        <joint name="right-foot" pos="0 0 0" axis="0 -1 0" range="-2.443 -0.5236" damping="50"/>
+                                        <geom type="mesh" name="right-foot" quat="-0.5534 -0.5534 -0.4402 0.4402" mesh="right-foot"/>
+                                        <geom class="collision-right" type="capsule" size="0.02 0.08" pos="0.04205 0 0.001022" quat="-0.8813 0.09866 -0.2116 0.4109"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <equality>
+        <connect body1="left-plantar-rod" body2="left-foot" anchor="0.08 0 -0.335"/>
+        <connect body1="left-achilles-rod" body2="left-heel-spring" anchor="-0.3 0.04 -0.39"/>
+        <connect body1="left-knee-spring" body2="left-shin" anchor="-0.09 0 -0.1"/>
+
+        <connect body1="right-plantar-rod" body2="right-foot" anchor="0.08 0 -0.335"/>
+        <connect body1="right-achilles-rod" body2="right-heel-spring" anchor="-0.3 -0.04 -0.39"/>
+        <connect body1="right-knee-spring" body2="right-shin" anchor="-0.09 0 -0.1"/>
+    </equality>
+
+    <actuator>
+        <motor name='left-hip-roll' joint='left-hip-roll' gear='25' ctrllimited='true' ctrlrange='-4.5 4.5' user='2900'/>
+        <motor name='left-hip-yaw' joint='left-hip-yaw' gear='25' ctrllimited='true' ctrlrange='-4.5 4.5' user='2900'/>
+        <motor name='left-hip-pitch' joint='left-hip-pitch' gear='16' ctrllimited='true' ctrlrange='-12.2 12.2' user='1300'/>
+        <motor name='left-knee' joint='left-knee' gear='16' ctrllimited='true' ctrlrange='-12.2 12.2' user='1300'/>
+        <motor name='left-foot' joint='left-foot' gear='50' ctrllimited='true' ctrlrange='-0.9 0.9' user='5500'/>
+        <motor name='right-hip-roll' joint='right-hip-roll' gear='25' ctrllimited='true' ctrlrange='-4.5 4.5' user='2900'/>
+        <motor name='right-hip-yaw' joint='right-hip-yaw' gear='25' ctrllimited='true' ctrlrange='-4.5 4.5' user='2900'/>
+        <motor name='right-hip-pitch' joint='right-hip-pitch' gear='16' ctrllimited='true' ctrlrange='-12.2 12.2' user='1300'/>
+        <motor name='right-knee' joint='right-knee' gear='16' ctrllimited='true' ctrlrange='-12.2 12.2' user='1300'/>
+        <motor name='right-foot' joint='right-foot' gear='50' ctrllimited='true' ctrlrange='-0.9 0.9' user='5500'/>
+    </actuator>
+
+    <sensor>
+        <actuatorpos name='left-hip-roll-input' actuator='left-hip-roll' user='13'/>
+        <actuatorpos name='left-hip-yaw-input' actuator='left-hip-yaw' user='13'/>
+        <actuatorpos name='left-hip-pitch-input' actuator='left-hip-pitch' user='13'/>
+        <actuatorpos name='left-knee-input' actuator='left-knee' user='13'/>
+        <actuatorpos name='left-foot-input' actuator='left-foot' user='18'/>
+        <jointpos name='left-shin-output' joint='left-shin' user='18' noise='2e-4'/>
+        <jointpos name='left-tarsus-output' joint='left-tarsus' user='18' noise='2e-4'/>
+        <jointpos name='left-foot-output' joint='left-foot' user='13'/>
+        <actuatorpos name='right-hip-roll-input' actuator='right-hip-roll' user='13'/>
+        <actuatorpos name='right-hip-yaw-input' actuator='right-hip-yaw' user='13'/>
+        <actuatorpos name='right-hip-pitch-input' actuator='right-hip-pitch' user='13'/>
+        <actuatorpos name='right-knee-input' actuator='right-knee' user='13'/>
+        <actuatorpos name='right-foot-input' actuator='right-foot' user='18'/>
+        <jointpos name='right-shin-output' joint='right-shin' user='18' noise='2e-4'/>
+        <jointpos name='right-tarsus-output' joint='right-tarsus' user='18' noise='2e-4'/>
+        <jointpos name='right-foot-output' joint='right-foot' user='13'/>
+
+        <framequat name='pelvis-orientation' objtype='site' objname='imu'/>
+        <gyro name='pelvis-angular-velocity' site='imu' noise='5e-4' cutoff='34.9'/>
+        <accelerometer name='pelvis-linear-acceleration' site='imu' noise='1e-2' cutoff='157'/>
+        <magnetometer name='pelvis-magnetometer' site='imu'/>
+
+        <subtreelinvel name="torso_subtreelinvel" body="cassie"/>
+        <subtreecom name="body_com" body="cassie"/>
+    </sensor>
+
+</mujoco>
