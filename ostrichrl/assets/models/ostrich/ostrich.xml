@@ -10,12 +10,12 @@
             <camera name="back" mode="trackcom" pos="-3.5 0 1.3" xyaxes="0 -1 0 1 0 3"/>
             <light name="top" mode="trackcom" exponent="10" cutoff="45" ambient="0 0 0" pos="0 0 5" directional="false"/>
 
-            <joint name="root_x" type="slide" pos="0 0 0" axis="1 0 0" limited="false"/>
-            <joint name="root_y" type="slide" pos="0 0 0" axis="0 1 0" limited="false"/>
-            <joint name="root_z" type="slide" pos="0 0 0" axis="0 0 1" limited="false"/>
-            <joint name="root_rot_x" pos="0 0 0" axis="1 0 0" limited="false"/>
-            <joint name="root_rot_y" pos="0 0 0" axis="0 1 0" limited="false"/>
-            <joint name="root_rot_z" pos="0 0 0" axis="0 0 1" limited="false"/>
+            <joint name="root_x" type="slide" pos="0 0 0" axis="1 0 0" limited="false" stiffness="0"/>
+            <joint name="root_y" type="slide" pos="0 0 0" axis="0 1 0" limited="false" stiffness="0"/>
+            <joint name="root_z" type="slide" pos="0 0 0" axis="0 0 1" limited="false" stiffness="0"/>
+            <joint name="root_rot_x" pos="0 0 0" axis="1 0 0" limited="false" stiffness="0"/>
+            <joint name="root_rot_y" pos="0 0 0" axis="0 1 0" limited="false" stiffness="0"/>
+            <joint name="root_rot_z" pos="0 0 0" axis="0 0 1" limited="false" stiffness="0"/>
 
             <include file="bones/legs.xml"/>
             <include file="bones/neck.xml"/>
