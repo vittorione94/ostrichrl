@@ -9,6 +9,7 @@ setuptools.setup(
     author='Vittorio La Barbera, Fabio Pardo',
     author_email='vlabarbera@rvc.ac.uk, f.pardo@imperial.ac.uk',
     install_requires=['dm_control', 'lxml', 'numpy'],
+    packages=setuptools.find_packages(exclude=("data")),
     license='MIT',
     python_requires='>=3.6',
     keywords=['ostrichrl', 'musculoskeletal', 'biomechanics',
